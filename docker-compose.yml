@@ -3,20 +3,15 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: price_tracker_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5432:5432"
-    restart: always
+      - 5432:5432
 
-  bot:
+  telegram-bot:
     build: .
     environment:
-      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
-      DATABASE_URL: ${DATABASE_URL}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
-    ports:
-      - "8443:8443"
-    restart: always

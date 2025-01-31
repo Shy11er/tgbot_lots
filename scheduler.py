@@ -24,13 +24,8 @@ async def parse_lot(session, lot_id):
         new_price = await manager.get_price(lot.url)
 
         if new_price is not None and new_price != lot.current_price:
-            url = await shorten_link_custom_service(lot.url)
-
             tg_message = f"Цена лота {lot.url} изменилась! Старая цена: {lot.current_price}, новая цена: {new_price}"
-            sms_message = f"'{url}' Б:{lot.current_price}.С:{new_price}"
-
-            if len(sms_message) >= 70:
-                sms_message = url
+            sms_message = f"'{lot.url}' Б:{lot.current_price}.С:{new_price}"
 
             await update_lot_price_async(lot, new_price)
 
@@ -73,5 +68,5 @@ async def shorten_link_custom_service(long_url):
 
 def run_scheduler():
     load_lots_to_cache()
-    asyncio.run(scheduled_task())
+    # asyncio.run(scheduled_task())
     manager.shutdown()
